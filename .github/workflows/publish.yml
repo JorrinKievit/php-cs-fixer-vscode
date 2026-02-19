@@ -6,7 +6,29 @@ on:
       - "v*"
 
 jobs:
-  publish:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - run: npm ci
+
+      - run: npm run build
+
+      - name: Package .vsix
+        run: npx vsce package -o php-cs-fixer.vsix
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: vsix
+          path: php-cs-fixer.vsix
+
+  publish-vsce:
+    needs: build
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -24,13 +46,32 @@ jobs:
         env:
           VSCE_PAT: ${{ secrets.VSCE_PAT }}
 
+  publish-ovsx:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: vsix
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
       - name: Publish to Open VSX
-        run: npx ovsx publish
+        run: npx ovsx publish php-cs-fixer.vsix
         env:
           OVSX_PAT: ${{ secrets.OVSX_PAT }}
 
-      - name: Package .vsix
-        run: npx vsce package -o php-cs-fixer.vsix
+  github-release:
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: vsix
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2

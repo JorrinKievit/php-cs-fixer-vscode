@@ -1,6 +1,6 @@
 {
   "name": "php-cs-fixer-vscode",
-  "displayName": "PHP CS Fixer",
+  "displayName": "PHP CS Fixer Extended",
   "description": "Format PHP files using php-cs-fixer with multi-config support via --path-mode=intersection",
   "version": "0.1.0",
   "publisher": "jorrin",

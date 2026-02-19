@@ -24,7 +24,7 @@ This extension uses `--path-mode=intersection` to try each config file and apply
 ```jsonc
 {
   "[php]": {
-    "editor.defaultFormatter": "JorrinKievit.php-cs-fixer",
+    "editor.defaultFormatter": "jorrin.php-cs-fixer-vscode",
     "editor.formatOnSave": true
   }
 }

@@ -1,0 +1,114 @@
+{
+  "name": "php-cs-fixer",
+  "displayName": "PHP CS Fixer",
+  "description": "Format PHP files using php-cs-fixer with multi-config support via --path-mode=intersection",
+  "version": "0.1.0",
+  "publisher": "JorrinKievit",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/JorrinKievit/php-cs-fixer-vscode"
+  },
+  "bugs": {
+    "url": "https://github.com/JorrinKievit/php-cs-fixer-vscode/issues"
+  },
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "categories": [
+    "Formatters"
+  ],
+  "keywords": [
+    "php",
+    "formatter",
+    "php-cs-fixer",
+    "code style",
+    "multi-config"
+  ],
+  "activationEvents": [
+    "onLanguage:php"
+  ],
+  "main": "./dist/extension.js",
+  "contributes": {
+    "configuration": {
+      "title": "PHP CS Fixer",
+      "properties": {
+        "phpCsFixer.executablePath": {
+          "type": "string",
+          "default": "",
+          "markdownDescription": "Path to the `php-cs-fixer` executable. Leave empty to auto-detect from `vendor/bin/`."
+        },
+        "phpCsFixer.phpPath": {
+          "type": "string",
+          "default": "",
+          "markdownDescription": "Path to the `php` executable. Leave empty to use `php` from PATH."
+        },
+        "phpCsFixer.configFiles": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "default": [],
+          "markdownDescription": "Explicit list of config file paths (relative to workspace root). Leave empty to auto-discover."
+        },
+        "phpCsFixer.autoDiscoverPatterns": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "default": [
+            ".php-cs-fixer.php",
+            ".php-cs-fixer.dist.php",
+            ".php-cs-fixer.*.php",
+            ".php-cs-fixer.*.dist.php"
+          ],
+          "markdownDescription": "Glob patterns to auto-discover config files in the workspace root."
+        },
+        "phpCsFixer.disabledConfigs": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "default": [],
+          "markdownDescription": "Config file names to skip during formatting (e.g. `[\".php-cs-fixer.new.dist.php\"]`)."
+        },
+        "phpCsFixer.extraArgs": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "default": [],
+          "markdownDescription": "Extra arguments to pass to `php-cs-fixer fix`."
+        },
+        "phpCsFixer.timeout": {
+          "type": "number",
+          "default": 10000,
+          "markdownDescription": "Timeout in milliseconds for php-cs-fixer execution."
+        }
+      }
+    },
+    "languages": [
+      {
+        "id": "php",
+        "extensions": [
+          ".php"
+        ]
+      }
+    ]
+  },
+  "scripts": {
+    "build": "esbuild ./src/extension.ts --bundle --outfile=dist/extension.js --external:vscode --format=cjs --platform=node --sourcemap",
+    "watch": "npm run build -- --watch",
+    "package": "vsce package",
+    "publish:vsce": "vsce publish",
+    "publish:ovsx": "ovsx publish"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "@types/vscode": "^1.85.0",
+    "@vscode/vsce": "^3.0.0",
+    "esbuild": "^0.24.0",
+    "ovsx": "^0.9.0",
+    "typescript": "^5.5.0"
+  }
+}

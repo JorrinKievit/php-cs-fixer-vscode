@@ -264,7 +264,7 @@ export class PhpCsFixerFormattingProvider
     const normalizedTarget = path.normalize(filePath);
     const lines = result.stdout.split("\n");
     return lines.some((line) => {
-      const trimmed = line.trim();
+      const trimmed = line.trim().replace(/^['"]|['"]$/g, "");
       if (!trimmed) return false;
       const absolute = path.resolve(cwd, trimmed);
       return path.normalize(absolute) === normalizedTarget;
